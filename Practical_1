@@ -1,0 +1,44 @@
+#include <iostream>
+#include <stdio.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <unistd.h>
+using namespace std;
+int main()
+{
+    int fdc, fdw, fdo, n;
+    char buffer_reader[50], buffer_writer[50], fdr[50];
+
+    fdc = creat("myfile.txt", 0777);
+    if (fdc < 0)
+        cout << "The file is not created" << endl;
+    else
+    {
+        cout << "The file was created successfully" << endl;
+        cout << "For writing the file" << endl;
+        cout << "Enter the size of the String: ";
+        cin >> n;
+        cout << "Write the content" << endl;
+        for (int i = 0; i < n; i++)
+        {
+            cin >> buffer_writer[i];
+        }
+        write(fdc, buffer_writer, sizeof(buffer_writer));
+        fdo = open("myfile.txt", _O_RDWR, 0111);
+        if (fdo < 0)
+            cout << "The file has not been opened" << endl;
+        else
+        {
+            cout << "The File is successfully opened" << endl;
+            read(fdo, buffer_reader, sizeof(buffer_reader));
+            cout << "Content: ";
+            for (int i = 0; i < n; i++)
+            {
+                cout << buffer_reader[i];
+            }
+        }
+
+        int close(int fdc);
+        close(fdo);
+    }
+}
